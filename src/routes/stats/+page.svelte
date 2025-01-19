@@ -20,7 +20,7 @@
     }));
 
     // Here is to multiply the the array to have more data, if you want to run you own test just change this code
-    const multipliedData = Array(40).fill(data).flat();
+    const multipliedData = Array(1).fill(data).flat();
 
     const rankedData = multipliedData
         .sort((a, b) => b.spotifyStreams - a.spotifyStreams)
@@ -69,7 +69,7 @@
             .style("height", "3rem")
             .style("margin", ".2rem")
             .style("background-color", d => d.explicit ? "orange" : "limegreen")
-            .style("color", "white")
+            .style("color", "black")
             .style("font-size", "1rem")
             .style("display", "flex")
             .style("align-items", "center")
@@ -175,7 +175,7 @@
     </label>
     <button 
         on:click={handleSubmit} 
-        class="bg-blue-500 text-white p-2 rounded"
+        class="bg-blue-500 text-black p-2 rounded"
     >
         Submit
     </button>
