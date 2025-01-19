@@ -131,7 +131,7 @@
     });
 </script>
 
-<h2 class="text-3xl font-serif">Spotify Song List</h2>
+<h2 class="text-3xl font-serif p-2">Spotify Song List</h2>
 
 <div class="controls">
     <label class="block">
