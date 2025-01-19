@@ -11,17 +11,22 @@
     const tooltip = { show: false, x: 0, y: 0, content: "" };
 
     const fetchData = async () => {
-        const data = await d3.csv('/dataset/MostStreamedSpotifySongs2024.csv', d => ({
-            track: d.Track,
-            artist: d.Artist,
-            spotifyStreams: +d['Spotify Streams'].replace(/,/g, ""), 
-            explicit: d['Explicit Track'] === "1"
-        }));
+    console.time("fetching");
+    const data = await d3.csv('/dataset/MostStreamedSpotifySongs2024.csv', d => ({
+        track: d.Track,
+        artist: d.Artist,
+        spotifyStreams: +d['Spotify Streams'].replace(/,/g, ""), 
+        explicit: d['Explicit Track'] === "1"
+    }));
 
-        return data
-            .sort((a, b) => b.spotifyStreams - a.spotifyStreams)
-            .map((d, i) => ({ ...d, rank: i + 1 }));
-    };
+    // Here is to multiply the the array to have more data, if you want to run you own test just change this code
+    const multipliedData = Array(40).fill(data).flat();
+
+    const rankedData = multipliedData
+        .sort((a, b) => b.spotifyStreams - a.spotifyStreams)
+        .map((d, i) => ({ ...d, rank: i + 1 }));
+    return rankedData;
+};
 
     const formatNumber = (number) => number.toLocaleString();
 
@@ -49,13 +54,13 @@
 
         chartData = filteredData.slice(startRank - 1, startRank - 1 + numOfSongs);
         renderChart();
+        console.timeEnd("fetching")
     };
 
     const renderChart = () => {
         const maxStreams = Math.max(...chartData.map(d => d.spotifyStreams));
         const chart = d3.select(el);
         chart.selectAll("*").remove();
-
         chart.selectAll("div")
             .data(chartData)
             .enter()
@@ -79,6 +84,7 @@
                     return `<span style="font-weight: bold;">${d.rank}.</span>`;
                 } else {
                     return `
+
                         <span style="font-weight: bold; margin-right: 1rem;">${d.rank}.</span>
                         <span>${d.track} - 
                             <span 
